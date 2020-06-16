@@ -1,0 +1,105 @@
+import csv
+import math
+import numpy as np
+import pandas as pd
+%matplotlib inline
+import matplotlib.pyplot as plt
+import rebound
+
+sim = rebound.Simulation()
+sim.integrator = "whfast"
+sim.dt = 1e-5 #timestep to start with
+
+# vy1=0.94164723
+# vy0=-0.1165*vy1
+# sim.add(m=1, x=-0.10434393193013883, y=0, z=0, vx=0, vy=vy0, vz=0) # Pluto
+# sim.add(m=0.1165, x=0.8956560680698612, y=0, z=0, vx=0, vy=vy1, vz=0) # Charon
+sim.add(m=1) # Pluto
+sim.add(m=1, a=1, e=0.01) # Charon
+sim.move_to_com()
+
+
+ri=2.48 #ri is the initial radius of the test particle
+sim.add(x=ri, vy=0.900415) #768，610，530
+sim.status()
+
+orbits = sim.calculate_orbits()
+n1, n2 = orbits[0].n, orbits[1].n
+T1, T2 = orbits[0].P, orbits[1].P
+ratio = n1/n2
+print("n1=",n1,"n2=",n2, "T1=",T1,"T2=",T2)
+print("ratio=",ratio)
+
+
+particles = sim.particles
+n = 700
+time = n*T1
+Noutputs = n+1
+times = np.linspace(0, time, Noutputs)
+x0, y0 = np.zeros(Noutputs), np.zeros(Noutputs)
+x1, y1 = np.zeros(Noutputs), np.zeros(Noutputs)
+x2, y2, vx2, vy2, e2 = np.zeros(Noutputs), np.zeros(Noutputs), np.zeros(Noutputs), np.zeros(Noutputs), np.zeros(Noutputs)
+
+
+for i,time in enumerate(times):
+    sim.integrate(time, exact_finish_time=0)
+    x0[i], y0[i] = particles[0].x, particles[0].y
+    x1[i], y1[i] = particles[1].x, particles[1].y
+    x2[i], y2[i], vx2[i], vy2[i], e2[i] = particles[2].x, particles[2].y, particles[2].vx, particles[2].vy, particles[2].e
+
+theta2=np.arctan2(y2, x2)
+r2=pow((x2*x2+y2*y2), 1/2)
+
+theta=np.arctan2((y1-y0), (x1-x0))
+x2_rf=x2*np.cos(theta)+y2*np.sin(theta) #massless particle in rotating frame
+y2_rf=-x2*np.sin(theta)+y2*np.cos(theta)
+vx2_rf=vx2*np.cos(theta)+vy2*np.sin(theta)
+vy2_rf=-vx2*np.sin(theta)+vy2*np.cos(theta)
+theta2_rf=np.arctan2(y2_rf, x2_rf)
+r2_rf=pow((x2_rf*x2_rf+y2_rf*y2_rf), 1/2)
+#eccentricity vector
+ex2_rf = (x2_rf*vy2_rf*vy2_rf-y2_rf*vx2_rf*vy2_rf)/2-x2_rf/pow(x2_rf**2+y2_rf**2, 1/2)
+ey2_rf = (y2_rf*vx2_rf*vx2_rf-x2_rf*vx2_rf*vy2_rf)/2-y2_rf/pow(x2_rf**2+y2_rf**2, 1/2)
+e2_rf = pow(ex2_rf**2+ey2_rf**2, 1/2)
+
+# datatheta2_rf = pd.DataFrame(theta2_rf)
+# datar2_rf = pd.DataFrame(r2_rf)
+# dataex2_rf = pd.DataFrame(ex2_rf)
+# dataey2_rf = pd.DataFrame(ey2_rf)
+# datae2_rf = pd.DataFrame(e2_rf)
+# datatheta2r2e2_rf = pd.concat([datatheta2_rf, datar2_rf, dataex2_rf, dataey2_rf, datae2_rf],axis=1,ignore_index=True) #merge
+# datatheta2r2e2_rf.to_csv('./desktop/2.5_for_col_e=0.01.csv', header=None, index=False)
+
+
+# datatheta2_rf = pd.DataFrame(theta2_rf)
+# datar2_rf = pd.DataFrame(r2_rf)
+# datatheta2r2_rf = pd.concat([datatheta2_rf, datar2_rf],axis=1,ignore_index=True) #merge
+# datatheta2r2_rf.to_csv('./desktop/2.515.csv', header=None, index=False)
+
+# invariant loop
+fig1=plt.figure(figsize=(6,6))
+ax1=plt.subplot(111)
+ax1.set_xlim([-4,4])
+# ax1.set_ylim([0, 1])
+# plt.title("3:2 r-theta")
+# plt.title(r"ri=15, $\alpha$=0.5, e=0""\n")
+#r'$\alpha > \beta$'
+plt.xlabel(r"$\theta$")
+plt.ylabel("r")
+# plt.plot(theta2_rf, r2_rf, color='#4169E1', linewidth=1);
+plt.scatter(theta2_rf, r2_rf, s=0.1, color='#4169E1', linewidth=1);
+#plt.savefig("./desktop/3:2rtheta.png", dpi=400)
+plt.show()
+
+# eccentricity of invariant loop
+fig2=plt.figure(figsize=(6,6))
+ax2=plt.subplot(111)
+ax2.set_xlim([-4,4])
+# ax1.set_ylim([0, 1])
+# plt.title(r"ri=15, $\alpha$=0.5, e=0""\n")
+plt.xlabel(r"$\theta$")
+plt.ylabel("e")
+plt.scatter(theta2_rf, e2_rf, s=0.1, color='k', linewidth=1);
+# plt.scatter(theta2_rf, e2, s=0.1, color='#4169E1', linewidth=1);
+#plt.savefig("./desktop/3:2rtheta.png", dpi=400)
+plt.show()
