@@ -1,1 +1,99 @@
-tbc
+#e_c = 0.024
+import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data4 = pd.read_csv("./desktop/data_invariant loops/P-C_2.430_e=0.024.csv")
+data5 = pd.read_csv("./desktop/data_invariant loops/P-C_2.433_e=0.024.csv")
+data6 = pd.read_csv("./desktop/data_invariant loops/P-C_2.436_e=0.024.csv")
+data7 = pd.read_csv("./desktop/data_invariant loops/P-C_2.439_e=0.024.csv")
+data8 = pd.read_csv("./desktop/data_invariant loops/P-C_2.442_e=0.024.csv")
+data9 = pd.read_csv("./desktop/data_invariant loops/P-C_2.445_e=0.024.csv")
+data10 = pd.read_csv("./desktop/data_invariant loops/P-C_2.451_e=0.024.csv")
+data11 = pd.read_csv("./desktop/data_invariant loops/P-C_2.454_e=0.024.csv")
+data12 = pd.read_csv("./desktop/data_invariant loops/P-C_2.457_e=0.024.csv")
+data2 = pd.read_csv("./desktop/data_invariant loops/P-C_2.46_e=0.024.csv")
+data13 = pd.read_csv("./desktop/data_invariant loops/P-C_2.463_e=0.024.csv")
+data14 = pd.read_csv("./desktop/data_invariant loops/P-C_2.466_e=0.024.csv")
+data15 = pd.read_csv("./desktop/data_invariant loops/P-C_2.469_e=0.024.csv")
+data16 = pd.read_csv("./desktop/data_invariant loops/P-C_2.472_e=0.024.csv")
+data17 = pd.read_csv("./desktop/data_invariant loops/P-C_2.475_e=0.024.csv")
+data18 = pd.read_csv("./desktop/data_invariant loops/P-C_2.478_e=0.024.csv")
+data19 = pd.read_csv("./desktop/data_invariant loops/P-C_2.481_e=0.024.csv")
+data20 = pd.read_csv("./desktop/data_invariant loops/P-C_2.484_e=0.024.csv")
+data22 = pd.read_csv("./desktop/data_invariant loops/P-C_2.487_e=0.024.csv")
+data3 = pd.read_csv("./desktop/data_invariant loops/P-C_2.49_e=0.024.csv")
+data23 = pd.read_csv("./desktop/data_invariant loops/P-C_2.492_e=0.024.csv")
+data24 = pd.read_csv("./desktop/data_invariant loops/P-C_2.495_e=0.024.csv")
+data25 = pd.read_csv("./desktop/data_invariant loops/P-C_2.497_e=0.024.csv")
+data26 = pd.read_csv("./desktop/data_invariant loops/P-C_2.499_e=0.024.csv")
+data1 = pd.read_csv("./desktop/data_invariant loops/P-C_2.5_e=0.024.csv")
+data27 = pd.read_csv("./desktop/data_invariant loops/P-C_2.501_e=0.024.csv")
+data28 = pd.read_csv("./desktop/data_invariant loops/P-C_2.502_e=0.024.csv")
+data29 = pd.read_csv("./desktop/data_invariant loops/P-C_2.503_e=0.024.csv")
+data30 = pd.read_csv("./desktop/data_invariant loops/P-C_2.51_e=0.024.csv")
+data31 = pd.read_csv("./desktop/data_invariant loops/P-C_2.515_e=0.024.csv")
+data32 = pd.read_csv("./desktop/data_invariant loops/P-C_2.52_e=0.024.csv")
+data33 = pd.read_csv("./desktop/data_invariant loops/P-C_2.525_e=0.024.csv")
+data34 = pd.read_csv("./desktop/data_invariant loops/P-C_2.53_e=0.024.csv")
+data35 = pd.read_csv("./desktop/data_invariant loops/P-C_2.535_e=0.024.csv")
+data36 = pd.read_csv("./desktop/data_invariant loops/P-C_2.54_e=0.024.csv")
+data37 = pd.read_csv("./desktop/data_invariant loops/P-C_2.545_e=0.024.csv")
+data38 = pd.read_csv("./desktop/data_invariant loops/P-C_2.55_e=0.024.csv")
+data39 = pd.read_csv("./desktop/data_invariant loops/P-C_2.555_e=0.024.csv")
+
+
+fig = plt.figure(figsize=(6,7))
+ax = plt.subplot(111)
+# ax.set_xlim([-4,4])
+# ax.set_ylim([2.505,2.55])
+plt.title("q=0.1165 e_b = 0.024")
+plt.xlabel(r"$\theta$")
+plt.ylabel("r")
+
+
+plt.scatter(data4.iloc[:,0], data4.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data5.iloc[:,0], data5.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data6.iloc[:,0], data6.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data7.iloc[:,0], data7.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.439");
+plt.scatter(data8.iloc[:,0], data8.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.442");
+plt.scatter(data9.iloc[:,0], data9.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.445");
+# begin to overlap
+plt.scatter(data10.iloc[:,0], data10.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.451");
+plt.scatter(data11.iloc[:,0], data11.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.454");
+plt.scatter(data12.iloc[:,0], data12.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.457");
+plt.scatter(data2.iloc[:,0], data2.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.46");
+plt.scatter(data13.iloc[:,0], data13.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.463");
+plt.scatter(data14.iloc[:,0], data14.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.466");
+plt.scatter(data15.iloc[:,0], data15.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.469");
+plt.scatter(data16.iloc[:,0], data16.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.472");
+plt.scatter(data17.iloc[:,0], data17.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.475");
+plt.scatter(data18.iloc[:,0], data18.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.478");
+plt.scatter(data19.iloc[:,0], data19.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.481");
+plt.scatter(data20.iloc[:,0], data20.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.484");
+plt.scatter(data22.iloc[:,0], data22.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.487");
+plt.scatter(data3.iloc[:,0], data3.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.49");
+plt.scatter(data23.iloc[:,0], data23.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.492");
+plt.scatter(data24.iloc[:,0], data24.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.495");
+plt.scatter(data25.iloc[:,0], data25.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.497");
+# plt.scatter(data26.iloc[:,0], data26.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.499");
+plt.scatter(data1.iloc[:,0], data1.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.5");
+# plt.scatter(data27.iloc[:,0], data27.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.501");
+# plt.scatter(data28.iloc[:,0], data28.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.502");
+plt.scatter(data29.iloc[:,0], data29.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.503");
+# finish overlapping
+plt.scatter(data30.iloc[:,0], data30.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.51");
+plt.scatter(data31.iloc[:,0], data31.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.515");
+plt.scatter(data32.iloc[:,0], data32.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.52");
+plt.scatter(data33.iloc[:,0], data33.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.525");
+plt.scatter(data34.iloc[:,0], data34.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.53");
+plt.scatter(data35.iloc[:,0], data35.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.535");
+plt.scatter(data36.iloc[:,0], data36.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.54");
+plt.scatter(data37.iloc[:,0], data37.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.545");
+plt.scatter(data38.iloc[:,0], data38.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.55");
+plt.scatter(data39.iloc[:,0], data39.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.55");
+
+# plt.legend(loc='upper right')
+# plt.savefig("./desktop/e_c=0.024.png", dpi=400)
+plt.show()
