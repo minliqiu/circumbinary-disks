@@ -80,6 +80,8 @@ for i,t in enumerate(times):
     
     print(v_rel[i]) # probably relative speed after collision
 
+# data_v_rel = pd.DataFrame(v_rel)
+# data_v_rel.to_csv('./desktop/v_rel_q=1_e=0.01_r=2.5_n=3000.csv', header=None, index=False)
 
 fig = plt.figure(figsize=(10,6))
 ax = plt.subplot(111)
