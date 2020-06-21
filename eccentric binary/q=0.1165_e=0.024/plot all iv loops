@@ -42,9 +42,16 @@ data36 = pd.read_csv("./desktop/data_invariant loops/P-C_2.54_e=0.024.csv")
 data37 = pd.read_csv("./desktop/data_invariant loops/P-C_2.545_e=0.024.csv")
 data38 = pd.read_csv("./desktop/data_invariant loops/P-C_2.55_e=0.024.csv")
 data39 = pd.read_csv("./desktop/data_invariant loops/P-C_2.555_e=0.024.csv")
+data40 = pd.read_csv("./desktop/data_invariant loops/P-C_2.56_e=0.024.csv")
+data41 = pd.read_csv("./desktop/data_invariant loops/P-C_2.565_e=0.024.csv")
+data42 = pd.read_csv("./desktop/data_invariant loops/P-C_2.57_e=0.024.csv")
+data43 = pd.read_csv("./desktop/data_invariant loops/P-C_2.575_e=0.024.csv")
+data44 = pd.read_csv("./desktop/data_invariant loops/P-C_2.58_e=0.024.csv")
+data45 = pd.read_csv("./desktop/data_invariant loops/P-C_2.585_e=0.024.csv")
 
 
-fig = plt.figure(figsize=(6,7))
+
+fig = plt.figure(figsize=(6,8))
 ax = plt.subplot(111)
 # ax.set_xlim([-4,4])
 # ax.set_ylim([2.505,2.55])
@@ -92,8 +99,15 @@ plt.scatter(data35.iloc[:,0], data35.iloc[:,1], s=0.2, color='#ADD8E6', linewidt
 plt.scatter(data36.iloc[:,0], data36.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.54");
 plt.scatter(data37.iloc[:,0], data37.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.545");
 plt.scatter(data38.iloc[:,0], data38.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.55");
-plt.scatter(data39.iloc[:,0], data39.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.55");
+plt.scatter(data39.iloc[:,0], data39.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.555");
+plt.scatter(data40.iloc[:,0], data40.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.56");
+plt.scatter(data41.iloc[:,0], data41.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.565");
+plt.scatter(data42.iloc[:,0], data42.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.56");
+plt.scatter(data43.iloc[:,0], data43.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.565");
+plt.scatter(data44.iloc[:,0], data44.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.56");
+plt.scatter(data45.iloc[:,0], data45.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.565");
+
 
 # plt.legend(loc='upper right')
-# plt.savefig("./desktop/e_c=0.024.png", dpi=400)
+plt.savefig("./desktop/ivtable_q=0.1165_e=0.024.png", dpi=400)
 plt.show()
