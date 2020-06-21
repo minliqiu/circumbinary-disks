@@ -1,1 +1,40 @@
+import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
+data1 = pd.read_csv("./desktop/data_q=1_e=0.01/2.47_q=1_e=0.01.csv")
+data2 = pd.read_csv("./desktop/data_q=1_e=0.01/2.475_q=1_e=0.01.csv")
+data3 = pd.read_csv("./desktop/data_q=1_e=0.01/2.48_q=1_e=0.01.csv")
+data4 = pd.read_csv("./desktop/data_q=1_e=0.01/2.485_q=1_e=0.01.csv")
+data5 = pd.read_csv("./desktop/data_q=1_e=0.01/2.49_q=1_e=0.01.csv")
+data6 = pd.read_csv("./desktop/data_q=1_e=0.01/2.495_q=1_e=0.01.csv")
+data7 = pd.read_csv("./desktop/data_q=1_e=0.01/2.5_q=1_e=0.01.csv")
+data8 = pd.read_csv("./desktop/data_q=1_e=0.01/2.505_q=1_e=0.01.csv")
+data9 = pd.read_csv("./desktop/data_q=1_e=0.01/2.51_q=1_e=0.01.csv")
+data10 = pd.read_csv("./desktop/data_q=1_e=0.01/2.515_q=1_e=0.01.csv")
+
+fig = plt.figure(figsize=(8,8))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+ax.set_ylim([2.44,2.54])
+plt.title("q=1 e_b = 0.01")
+plt.xlabel(r"$\theta$")
+plt.ylabel("r")
+
+
+plt.scatter(data1.iloc[:,0], data1.iloc[:,1], s=0.2, color='#4169E1', linewidth=0.15, label="ri=2.47");
+plt.scatter(data2.iloc[:,0], data2.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.475");
+plt.scatter(data3.iloc[:,0], data3.iloc[:,1], s=0.2, color='#90EE90', linewidth=0.15, label="ri=2.48");
+plt.scatter(data4.iloc[:,0], data4.iloc[:,1], s=0.2, color='#4169E1', linewidth=0.15, label="ri=2.485");
+plt.scatter(data5.iloc[:,0], data5.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.49");
+plt.scatter(data6.iloc[:,0], data6.iloc[:,1], s=0.2, color='#90EE90', linewidth=0.15, label="ri=2.495");
+plt.scatter(data7.iloc[:,0], data7.iloc[:,1], s=0.2, color='#4169E1', linewidth=0.15, label="ri=2.5");
+plt.scatter(data8.iloc[:,0], data8.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.505");
+plt.scatter(data9.iloc[:,0], data9.iloc[:,1], s=0.2, color='#90EE90', linewidth=0.15, label="ri=2.52");
+plt.scatter(data10.iloc[:,0], data10.iloc[:,1], s=0.2, color='#4169E1', linewidth=0.15, label="ri=2.515");
+
+
+# plt.legend(loc='upper right')
+plt.savefig("./desktop/ivtable_q=1_e=0.01.png", dpi=400)
+plt.show()
