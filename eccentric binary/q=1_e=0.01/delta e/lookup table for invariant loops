@@ -1,0 +1,55 @@
+import csv
+import math
+import numpy as np
+import pandas as pd
+get_ipython().magic('matplotlib inline')
+import matplotlib.pyplot as plt
+
+
+data3 = pd.read_csv("./desktop/data_q=1_e=0.01/2.48_q=1_e=0.01.csv")
+data4 = pd.read_csv("./desktop/data_q=1_e=0.01/2.485_q=1_e=0.01.csv")
+data5 = pd.read_csv("./desktop/data_q=1_e=0.01/2.49_q=1_e=0.01.csv")
+data6 = pd.read_csv("./desktop/data_q=1_e=0.01/2.495_q=1_e=0.01.csv")
+data7 = pd.read_csv("./desktop/data_q=1_e=0.01/2.5_q=1_e=0.01.csv")
+data8 = pd.read_csv("./desktop/data_q=1_e=0.01/2.505_q=1_e=0.01.csv")
+data9 = pd.read_csv("./desktop/data_q=1_e=0.01/2.51_q=1_e=0.01.csv")
+data10 = pd.read_csv("./desktop/data_q=1_e=0.01/2.515_q=1_e=0.01.csv")
+
+
+datasep0 = pd.concat([data3.iloc[:,0], data4.iloc[:,0], data5.iloc[:,0], data6.iloc[:,0], data7.iloc[:,0], 
+                      data8.iloc[:,0], data9.iloc[:,0], data10.iloc[:,0]], axis=0, ignore_index=True) #merge
+
+datasep1 = pd.concat([data3.iloc[:,1], data4.iloc[:,1], data5.iloc[:,1], data6.iloc[:,1], data7.iloc[:,1], 
+                      data8.iloc[:,1], data9.iloc[:,1], data10.iloc[:,1]], axis=0, ignore_index=True) #merge
+
+datasep2 = pd.concat([data3.iloc[:,2], data4.iloc[:,2], data5.iloc[:,2], data6.iloc[:,2], data7.iloc[:,2], 
+                      data8.iloc[:,2], data9.iloc[:,2], data10.iloc[:,2]], axis=0, ignore_index=True) #merge
+
+datasep3 = pd.concat([data3.iloc[:,3], data4.iloc[:,3], data5.iloc[:,3], data6.iloc[:,3], data7.iloc[:,3], 
+                      data8.iloc[:,3], data9.iloc[:,3], data10.iloc[:,3]], axis=0, ignore_index=True) #merge
+
+datasep4 = pd.concat([data3.iloc[:,4], data4.iloc[:,4], data5.iloc[:,4], data6.iloc[:,4], data7.iloc[:,4], 
+                      data8.iloc[:,4], data9.iloc[:,4], data10.iloc[:,4]], axis=0, ignore_index=True) #merge
+
+
+data = pd.concat([datasep0, datasep1, datasep2, datasep3, datasep4], axis=1, ignore_index=True)
+
+# print(data)
+
+data.to_csv('./desktop/lookuptable_q=1_e=0.01_2.48_2.515.csv', header=None, index=False)
+
+
+
+fig = plt.figure(figsize=(10,7.5))
+ax = plt.subplot(111)
+# ax.set_xlim([0,endtime])
+# ax.set_ylim([2.49, 2.57])
+# plt.title("eps=0.3 (Pluto-Charon)")
+# ax.set_xlabel("Time")
+# ax.set_ylabel("vector_(e-e_periodic)_rms")
+plt.scatter(data.iloc[:,0], data.iloc[:,1], s=0.1)
+# plt.scatter(times, delta_e_vector_rms, s=1, color='#4169E1', linewidth=0.1);
+# plt.savefig("./desktop/circular_delta_e_eps=0.3_2.5only_500.png", dpi=400)
+# plt.colorbar()
+fig.show()
+
