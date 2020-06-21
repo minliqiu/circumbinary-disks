@@ -1,1 +1,75 @@
-tbc
+import csv
+import math
+import numpy as np
+import pandas as pd
+get_ipython().magic('matplotlib inline')
+import matplotlib.pyplot as plt
+
+
+
+data1 = pd.read_csv("./desktop/data_invariant loops/P-C_2.5_e=0.024.csv")
+data29 = pd.read_csv("./desktop/data_invariant loops/P-C_2.503_e=0.024.csv")
+data30 = pd.read_csv("./desktop/data_invariant loops/P-C_2.51_e=0.024.csv")
+data31 = pd.read_csv("./desktop/data_invariant loops/P-C_2.515_e=0.024.csv")
+data32 = pd.read_csv("./desktop/data_invariant loops/P-C_2.52_e=0.024.csv")
+data33 = pd.read_csv("./desktop/data_invariant loops/P-C_2.525_e=0.024.csv")
+data34 = pd.read_csv("./desktop/data_invariant loops/P-C_2.53_e=0.024.csv")
+data35 = pd.read_csv("./desktop/data_invariant loops/P-C_2.535_e=0.024.csv")
+data36 = pd.read_csv("./desktop/data_invariant loops/P-C_2.54_e=0.024.csv")
+data37 = pd.read_csv("./desktop/data_invariant loops/P-C_2.545_e=0.024.csv")
+data38 = pd.read_csv("./desktop/data_invariant loops/P-C_2.55_e=0.024.csv")
+data39 = pd.read_csv("./desktop/data_invariant loops/P-C_2.555_e=0.024.csv")
+data40 = pd.read_csv("./desktop/data_invariant loops/P-C_2.56_e=0.024.csv")
+data41 = pd.read_csv("./desktop/data_invariant loops/P-C_2.565_e=0.024.csv")
+data42 = pd.read_csv("./desktop/data_invariant loops/P-C_2.57_e=0.024.csv")
+data43 = pd.read_csv("./desktop/data_invariant loops/P-C_2.575_e=0.024.csv")
+data44 = pd.read_csv("./desktop/data_invariant loops/P-C_2.58_e=0.024.csv")
+data45 = pd.read_csv("./desktop/data_invariant loops/P-C_2.585_e=0.024.csv")
+
+
+datasep0 = pd.concat([data1.iloc[:,0], data29.iloc[:,0], data30.iloc[:,0], data31.iloc[:,0], data32.iloc[:,0], data33.iloc[:,0],
+                      data34.iloc[:,0], data35.iloc[:,0], data36.iloc[:,0], data37.iloc[:,0], data38.iloc[:,0], data39.iloc[:,0],
+                     data40.iloc[:,0], data41.iloc[:,0], data42.iloc[:,0], data43.iloc[:,0], data44.iloc[:,0], data45.iloc[:,0]], axis=0, ignore_index=True) #merge
+
+datasep1 = pd.concat([data1.iloc[:,1], data29.iloc[:,1], data30.iloc[:,1], data31.iloc[:,1], data32.iloc[:,1], data33.iloc[:,1],
+                      data34.iloc[:,1], data35.iloc[:,1], data36.iloc[:,1], data37.iloc[:,1], data38.iloc[:,1], data39.iloc[:,1],
+                     data40.iloc[:,1], data41.iloc[:,1], data42.iloc[:,1], data43.iloc[:,1], data44.iloc[:,1], data45.iloc[:,1]], axis=0, ignore_index=True) #merge
+
+datasep2 = pd.concat([data1.iloc[:,2], data29.iloc[:,2], data30.iloc[:,2], data31.iloc[:,2], data32.iloc[:,2], data33.iloc[:,2],
+                      data34.iloc[:,2], data35.iloc[:,2], data36.iloc[:,2], data37.iloc[:,2], data38.iloc[:,2], data39.iloc[:,2],
+                     data40.iloc[:,2], data41.iloc[:,2], data42.iloc[:,2], data43.iloc[:,2], data44.iloc[:,2], data45.iloc[:,2]], axis=0, ignore_index=True) #merge
+
+datasep3 = pd.concat([data1.iloc[:,3], data29.iloc[:,3], data30.iloc[:,3], data31.iloc[:,3], data32.iloc[:,3], data33.iloc[:,3],
+                      data34.iloc[:,3], data35.iloc[:,3], data36.iloc[:,3], data37.iloc[:,3], data38.iloc[:,3], data39.iloc[:,3],
+                     data40.iloc[:,3], data41.iloc[:,3], data42.iloc[:,3], data43.iloc[:,3], data44.iloc[:,3], data45.iloc[:,3]], axis=0, ignore_index=True) #merge
+
+datasep4 = pd.concat([data1.iloc[:,4], data29.iloc[:,4], data30.iloc[:,4], data31.iloc[:,4], data32.iloc[:,4], data33.iloc[:,4],
+                      data34.iloc[:,4], data35.iloc[:,4], data36.iloc[:,4], data37.iloc[:,4], data38.iloc[:,4], data39.iloc[:,4],
+                     data40.iloc[:,4], data41.iloc[:,4], data42.iloc[:,4], data43.iloc[:,4], data44.iloc[:,4], data45.iloc[:,4]], axis=0, ignore_index=True) #merge
+
+
+
+data = pd.concat([datasep0, datasep1, datasep2, datasep3, datasep4], axis=1, ignore_index=True)
+
+# print(data)
+
+data.to_csv('./desktop/lookuptable_q=0.1165_e=0.024_2.5_2.585.csv', header=None, index=False)
+
+
+
+fig = plt.figure(figsize=(10,7.5))
+ax = plt.subplot(111)
+# ax.set_xlim([0,endtime])
+ax.set_ylim([2.49, 2.57])
+# plt.title("eps=0.3 (Pluto-Charon)")
+# ax.set_xlabel("Time")
+# ax.set_ylabel("vector_(e-e_periodic)_rms")
+plt.scatter(data.iloc[:,0], data.iloc[:,1], s=0.1)
+# plt.scatter(times, delta_e_vector_rms, s=1, color='#4169E1', linewidth=0.1);
+# plt.savefig("./desktop/circular_delta_e_eps=0.3_2.5only_500.png", dpi=400)
+plt.colorbar()
+fig.show()
+
+
+
+
