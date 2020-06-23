@@ -25,7 +25,7 @@ del sim
 
 def setupSimulation(N_testparticle):
     sim = rebound.Simulation("primaries.bin")
-    a_initial = np.linspace(2.52, 2.53, N_testparticle)
+    a_initial = np.linspace(2.57, 2.58, N_testparticle)
     for a in a_initial:
         sim.add(m=1e-100, a=a, f=np.random.rand()*2.*np.pi, e=0, r=2.5*1e-3) # random true anomaly, 2*radius = s_grid
     return sim
@@ -48,7 +48,7 @@ def epsilon(r, const):
     return eps
 sim.coefficient_of_restitution = epsilon
 
-n = 10000
+n = 9000
 endtime = n*T1
 Noutputs = n+1
 times = np.linspace(0, endtime, Noutputs)                                          
@@ -80,8 +80,6 @@ for i,t in enumerate(times):
     
     print(v_rel[i]) # probably relative speed after collision
 
-# data_v_rel = pd.DataFrame(v_rel)
-# data_v_rel.to_csv('./desktop/v_rel_q=0.1165_e=0.024_r=2.525_n=5000.csv', header=None, index=False)
 
 # fig = plt.figure(figsize=(10,6))
 # ax = plt.subplot(111)
@@ -111,3 +109,24 @@ fig.show()
 end=time.clock()
 print("Running time: %s Seconds"%(end-start))
 
+# n=2500; Running time: 29672.51835 Seconds
+# n=5000; Running time: 40998.709229 Seconds
+
+
+fig = plt.figure(figsize=(10,6))
+ax = plt.subplot(111)
+ax.set_xlim([0,40000])
+# ax.set_ylim([-0.001, 0.25])
+plt.title("relative collision speed")
+plt.xlabel("t")
+plt.ylabel("v_rel")
+plt.scatter(times, v_rel, s=1, color='#B0C4DE', linewidth=1, 
+            label="eps = 0.3\n\nq = 0.1165\n\ne_b = 0.024\n\n2.57 <= r <= 2.58");
+plt.legend()
+# plt.savefig("./desktop/v_rel_q=0.1165_e=0.024_r=2.575_n=9000.png", dpi=400)
+fig.show()
+
+
+
+# data_v_rel = pd.DataFrame(v_rel)
+# data_v_rel.to_csv('./desktop/v_rel_q=0.1165_e=0.024_r=2.575_n=9000.csv', header=None, index=False)
