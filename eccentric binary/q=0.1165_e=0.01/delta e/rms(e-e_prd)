@@ -13,9 +13,9 @@ start=time.clock()
 # set up initially periodic orbits
 sim = rebound.Simulation()
 sim.integrator = "ias15" # default integrator; non-symplectic integrator with an adaptive timestep scheme
-sim.dt = 1e-4
+sim.dt = 1e-5
 sim.add(m=1)
-sim.add(m=1, a=1, e=0)
+sim.add(m=0.1165, a=1, e=0.01)
 sim.move_to_com()
 sim.save("primaries.bin")
 del sim
@@ -23,14 +23,14 @@ del sim
 
 def setupSimulation(N_testparticle):
     sim = rebound.Simulation("primaries.bin")
-    a_initial = np.linspace(2.495, 2.505, N_testparticle)
+    a_initial = np.linspace(2.52, 2.53, N_testparticle)
     for a in a_initial:
         sim.add(m=1e-100, a=a, f=np.random.rand()*2.*np.pi, e=0, r=2.5*1e-3) # random true anomaly, 2*radius = s_grid
     return sim
 
 
 # get periodic orbits
-theta_r_e_periodic = pd.read_csv("./desktop/2.5_for_col.csv")
+theta_r_e_periodic = pd.read_csv("./desktop/r/Pluto-Charon/delta e/lookup table/PC_2.48_2.52_2.53_2.55_disk.csv")
 theta_periodic = theta_r_e_periodic.iloc[:,0]
 r_periodic = theta_r_e_periodic.iloc[:,1]
 ex_periodic = theta_r_e_periodic.iloc[:,2]
@@ -38,8 +38,15 @@ ey_periodic = theta_r_e_periodic.iloc[:,3]
 e_periodic = theta_r_e_periodic.iloc[:,4]
 
 def e_Periodic(theta_RF, r_RF):
-    theta_periodic_rf_position = np.where(abs(theta_periodic-theta_RF)<1e-4) # find position of theta
-    position = theta_periodic_rf_position[0][0]
+    theta_periodic_rf_position = np.where(abs(theta_periodic-theta_RF)<1e-3) # find position of theta
+    r_periodic_rf_position = np.where(abs(r_periodic-r_RF)<0.001)
+    theta_r_position = [val for val in theta_periodic_rf_position[0] if val in r_periodic_rf_position[0]] # take same terms
+#     print(theta_r_position)
+    if len(theta_r_position) == 0:
+        position = theta_periodic_rf_position[0][0]
+#         print("find null")
+    else:
+        position = theta_r_position[0]
     ex_Periodic = ex_periodic[position] # find the corresponding e_periodic
     ey_Periodic = ey_periodic[position]
     e_Periodic = e_periodic[position]
@@ -47,8 +54,12 @@ def e_Periodic(theta_RF, r_RF):
 
 
 # main body
-N_testparticle = 500 # not 1e4
+N_testparticle = 1000 # not 1e4
 sim = setupSimulation(N_testparticle)
+
+orbits = sim.calculate_orbits()
+T1= orbits[0].P
+print("T1=",T1)
 
 sim.collision = "direct"
 sim.collision_resolve = "hardsphere"
@@ -70,8 +81,10 @@ ax.scatter(coords[0],coords[1])
 ax.scatter(sim.particles[1].x,sim.particles[1].y); 
 fig.show()
 
-endtime = 5000
-Noutputs = 10*endtime
+
+n = 12000
+endtime = n*T1
+Noutputs = n+1
 times = np.linspace(0, endtime, Noutputs)
 x, y = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
 vx, vy = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
@@ -99,20 +112,58 @@ ex_rf = (x_rf*vy_rf*vy_rf-y_rf*vx_rf*vy_rf)/2-x_rf/pow(x_rf**2+y_rf**2, 1/2)
 ey_rf = (y_rf*vx_rf*vx_rf-x_rf*vx_rf*vy_rf)/2-y_rf/pow(x_rf**2+y_rf**2, 1/2)
 e_rf = pow(ex_rf**2+ey_rf**2, 1/2)
 
+end=time.clock()
+print("Running time: %s Seconds"%(end-start))
+
+
+# exclude unbound particles
+r_rf_8000 = r_rf[:,8000]
+r_rf_position = np.where((r_rf_8000<=2.57) & (r_rf_8000>=2.46))
+position = r_rf_position[0]
+N_tp_bound = len(position) # number of the remaining particles
+print("number of remaining particles =",N_tp_bound)
+
+r_rf = r_rf[position,:]
+theta_rf = theta_rf[position,:]
+#eccentricity vector
+ex_rf = ex_rf[position,:]
+ey_rf = ey_rf[position,:]
+e_rf = e_rf[position,:]
+
+
+
+def e_Periodic(theta_RF, r_RF):
+    theta_periodic_rf_position = np.where(abs(theta_periodic-theta_RF)<0.5*1e-3) # find position of theta
+    r_periodic_rf_position = np.where(abs(r_periodic-r_RF)<0.0005)
+    theta_r_position = [val for val in theta_periodic_rf_position[0] if val in r_periodic_rf_position[0]] # take same terms
+#     print(theta_r_position)
+    if len(theta_r_position) == 0:
+        position = theta_periodic_rf_position[0][0]
+#         print("find null")
+    else:
+        position = theta_r_position[0]
+    ex_Periodic = ex_periodic[position] # find the corresponding e_periodic
+    ey_Periodic = ey_periodic[position]
+    e_Periodic = e_periodic[position]
+    return ex_Periodic, ey_Periodic, e_Periodic
+
+
+
+start=time.clock()
 
 # calculate difference between e and e_periodic
 particles = sim.particles
 delta_e_vector_rms = np.zeros(Noutputs)
 for n in range(0, Noutputs): # go through time
     delta_e_sq_sum = 0 # delta square
-    for j in range(0, N_testparticle):
+    for j in range(0, N_tp_bound):
         # eccentricity vector in the rotating frame
-        ex_RF = ex_rf[j+2][n]
-        ey_RF = ey_rf[j+2][n]
-        e_RF = e_rf[j+2][n] # same if use e[j+2][n]
+        ex_RF = ex_rf[j][n]
+        ey_RF = ey_rf[j][n]
+        e_RF = e_rf[j][n] # same if use e[j][n]
         # find corresponding e_PERIODIC
-        theta_RF = theta_rf[j+2][n] # theta of test particle in RF
-        r_RF = r_rf[j+2][n]
+        theta_RF = theta_rf[j][n] # theta of test particle in RF
+        r_RF = r_rf[j][n]
         ex_PERIODC, ey_PERIODC, e_PERIODC = e_Periodic(theta_RF, r_RF)
         # delta e (e_RF - e_PERIODC)
         delta_ex = ex_RF - ex_PERIODC
@@ -121,34 +172,24 @@ for n in range(0, Noutputs): # go through time
         delta_e_vector = pow(delta_ex**2+delta_ey**2, 1/2)
         delta_e_vector = e_RF-e_PERIODC
         delta_e_sq_sum = delta_e_sq_sum + delta_e_vector**2
-    delta_e_vector_rms[n] = np.sqrt(delta_e_sq_sum/N_testparticle)
+    delta_e_vector_rms[n] = np.sqrt(delta_e_sq_sum/N_tp_bound)
 
 print("delta_e_vector_rms=",delta_e_vector_rms[Noutputs-1])
-data_delta_e_vector_rms = pd.DataFrame(delta_e_vector_rms)
-data_delta_e_vector_rms.to_csv('./desktop/circular_delta_e_vector_eps=0.3_2.5only_500.csv', header=None, index=False)
+# data_delta_e_vector_rms = pd.DataFrame(delta_e_vector_rms)
+# data_delta_e_vector_rms.to_csv('./desktop/PC_delta_e_vector_2.52_n=12000.csv', header=None, index=False)
 
 # e_rms-t plotting
-fig = plt.figure(figsize=(10,7.5))
+fig = plt.figure(figsize=(9,6))
 ax = plt.subplot(111)
 ax.set_xlim([0,endtime])
 # ax.set_ylim([-0.01, 0.01])
-plt.title("eps=0.3 (circular)")
+plt.title("rms(e-e_periodic)")
 ax.set_xlabel("Time")
-ax.set_ylabel("vector_(e-e_periodic)_rms")
-plt.scatter(times, delta_e_vector_rms, s=1, color='#4169E1', linewidth=0.1);
-plt.savefig("./desktop/circular_delta_e_eps=0.3_2.5only_500.png", dpi=400)
+ax.set_ylabel("rms(e-e_periodic)")
+plt.scatter(times, delta_e_vector_rms, s=1, color='#4169E1', linewidth=0.1, label="q=0.1165\ne=0.01\n2.52 <= r <= 2.53\neps=0.3");
+plt.legend()
+# plt.savefig("./desktop/PC_delta_e_2.52_3000.png", dpi=400)
 fig.show()
-
-# coords = np.zeros((2,sim.N))
-# for i in range(sim.N):
-#     coords[0][i], coords[1][i] = sim.particles[i].x, sim.particles[i].y
-# fig, ax = plt.subplots()
-# ax.axis('equal')
-# ax.set_xlim([-5,5])
-# ax.set_ylim([-5, 5])
-# ax.scatter(coords[0],coords[1])
-# ax.scatter(sim.particles[1].x,sim.particles[1].y); 
-# fig.show()
 
 end=time.clock()
 print("Running time: %s Seconds"%(end-start))
