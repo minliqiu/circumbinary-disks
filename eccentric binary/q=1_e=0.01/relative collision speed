@@ -131,5 +131,6 @@ fig.show()
 
 
 
+
 # data_v_rel = pd.DataFrame(v_rel)
 # data_v_rel.to_csv('./desktop/v_rel_q=1_e=0.01_r=2.5_n=6000.csv', header=None, index=False)
