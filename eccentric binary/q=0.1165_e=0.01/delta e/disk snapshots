@@ -116,3 +116,80 @@ print("Running time: %s Seconds"%(end-start))
 
 # N=1000, n=9000, 100335.911741 Seconds 
 # N=1000, n=12000, 90704.097555 Seconds
+
+
+
+
+
+fig = plt.figure(figsize=(20,30))
+fig.suptitle("q=0.1165, e=0.01(r=2.52-r=2.53)\nin periods of T1\n(T1=5.9464)")
+ax = plt.subplot2grid((3,3), (0,0))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=0")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(theta_rf[:,0], r_rf[:,0], s=1.5, color='#B0C4DE', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (0,1))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=500*T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,499], r_rf[:,499], s=1.5, color='#7FFFD4', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (0,2))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=1500*T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,1499], r_rf[:,1499], s=1.5, color='#6495ED', linewidth=1.5, label="eps=0.3");
+plt.legend()
+#
+ax = plt.subplot2grid((3,3), (1,0))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=2000") 
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(theta_rf[:,1999], r_rf[:,1999], s=1.5, color='#B0C4DE', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (1,1))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=3000*T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,2999], r_rf[:,2999], s=1.5, color='#7FFFD4', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (1,2))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=4000*T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,3999], r_rf[:,3999], s=1.5, color='#6495ED', linewidth=1.5, label="eps=0.3");
+plt.legend()
+#
+ax = plt.subplot2grid((3,3), (2,0))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=5000*T1") 
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(theta_rf[:,6999], r_rf[:,6999], s=1.5, color='#B0C4DE', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (2,1))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=7000**T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,9999], r_rf[:,9999], s=1.5, color='#7FFFD4', linewidth=1.5, label="eps=0.3");
+plt.legend()
+ax = plt.subplot2grid((3,3), (2,2))
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 3])
+plt.title("t=9000**T1") 
+plt.xlabel("theta")
+plt.scatter(theta_rf[:,11999], r_rf[:,11999], s=1.5, color='#6495ED', linewidth=1.5, label="eps=0.3");
+plt.legend()
+# plt.savefig("./desktop/disk(PC_e=0.01_N=1000_n=9000).png", dpi=600)
+fig.show()
