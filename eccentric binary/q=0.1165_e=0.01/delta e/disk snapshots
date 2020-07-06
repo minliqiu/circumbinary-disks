@@ -118,6 +118,21 @@ print("Running time: %s Seconds"%(end-start))
 # N=1000, n=12000, 90704.097555 Seconds
 
 
+# final snapshot
+fig = plt.figure(figsize=(8,6))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+ax.set_ylim([2.25, 2.8])
+plt.title("snapshot of the disk\nt=12000*T1")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(theta_rf[:,Noutputs-1], r_rf[:,Noutputs-1], s=1.5, color='#B0C4DE', linewidth=1.5,
+           label="q=0.1165\ne=0.01\n2.52 <= r <= 2.53\neps=0.3");
+plt.legend()
+# plt.savefig("./desktop/disksnapshot_q=0.1165_e=0.01_N=1000.png", dpi=400)
+fig.show()
+
+
 
 
 
