@@ -1,1 +1,118 @@
-tbc
+import csv
+import time
+import math
+import rebound
+import numpy as np
+import pandas as pd
+get_ipython().magic('matplotlib inline')
+import matplotlib.pyplot as plt
+
+start=time.clock()
+
+
+# set up initially periodic orbits
+sim = rebound.Simulation()
+sim.integrator = "ias15" # default integrator; non-symplectic integrator with an adaptive timestep scheme
+sim.dt = 1e-4
+sim.add(m=1) # Pluto
+sim.add(m=0.1165, a=1, e=0.01) # Charon
+sim.move_to_com()
+sim.save("primaries.bin")
+del sim
+
+
+def setupSimulation(N_testparticle):
+    sim = rebound.Simulation("primaries.bin")
+    a_initial = np.linspace(2.52, 2.53, N_testparticle)
+    for a in a_initial:
+        sim.add(m=1e-100, a=a, f=np.random.rand()*2.*np.pi, e=0, r=2.5*1e-3) # random true anomaly, 2*radius = s_grid
+    return sim
+
+
+# main body
+N_testparticle = 1000 # not 1e4
+sim = setupSimulation(N_testparticle)
+
+orbits = sim.calculate_orbits()
+T1= orbits[0].P
+print("T1=",T1)
+
+# sim.collision = "direct"
+# sim.collision_resolve = "hardsphere"
+# const = 0.3
+# def epsilon(r, const):
+#     eps = const
+# #     print("eps=",eps)
+#     return eps
+# sim.coefficient_of_restitution = epsilon
+
+coords = np.zeros((2,sim.N))
+for i in range(sim.N):
+    coords[0][i], coords[1][i] = sim.particles[i].x, sim.particles[i].y
+fig, ax = plt.subplots()
+ax.axis('equal')
+ax.set_xlim([-5,5])
+ax.set_ylim([-5,5])
+ax.scatter(coords[0],coords[1])
+ax.scatter(sim.particles[1].x,sim.particles[1].y); 
+fig.show()
+
+n = 12000
+endtime = n*T1
+Noutputs = n+1
+times = np.linspace(0, endtime, Noutputs)
+x, y = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
+vx, vy = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
+theta = np.zeros(Noutputs) # theta of the binary
+x_rf, y_rf = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
+vx_rf, vy_rf = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
+                                                   
+particles = sim.particles
+for i,t in enumerate(times):
+    sim.integrate(t,exact_finish_time=0)
+    theta[i] = np.arctan2((particles[1].y-particles[0].y), (particles[1].x-particles[0].x))
+    for l in range(0, sim.N):
+        x[l][i], y[l][i] = particles[l].x, particles[l].y
+        vx[l][i], vy[l][i] = particles[l].vx, particles[l].vy
+        # RF
+        x_rf[l][i]=x[l][i]*np.cos(theta[i])+y[l][i]*np.sin(theta[i]) #massless particle in rotating frame
+        y_rf[l][i]=-x[l][i]*np.sin(theta[i])+y[l][i]*np.cos(theta[i])
+        vx_rf[l][i]=vx[l][i]*np.cos(theta[i])+vy[l][i]*np.sin(theta[i])
+        vy_rf[l][i]=-vx[l][i]*np.sin(theta[i])+vy[l][i]*np.cos(theta[i])    
+
+theta_rf=np.arctan2(y_rf, x_rf)
+r_rf=pow((x_rf**2+y_rf**2), 1/2)
+
+# data_theta_rf = pd.DataFrame(theta_rf)
+# data_theta_rf.to_csv('./desktop/snapshot_theta_q=0.1165_e=0.01_rfrom2.52to2.53_N=1000_n=12000.csv', header=None, index=False)    
+# data_r_rf = pd.DataFrame(r_rf)
+# data_r_rf.to_csv('./desktop/snapshot_r_q=0.1165_e=0.01_rfrom2.52to2.53_N=1000_n=12000.csv', header=None, index=False)
+
+fig = plt.figure(figsize=(10,7))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+# ax.set_ylim([1.5, 2.5])
+plt.title("t=12000*T1")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(theta_rf[:,Noutputs-1], r_rf[:,Noutputs-1], s=1.5, color='#B0C4DE', linewidth=1.5, label="eps=0.3");
+plt.legend()
+# plt.savefig("./desktop/disk(t=5000).png", dpi=400)
+fig.show()
+
+coords = np.zeros((2,sim.N))
+for i in range(sim.N):
+    coords[0][i], coords[1][i] = sim.particles[i].x, sim.particles[i].y
+fig, ax = plt.subplots()
+ax.axis('equal')
+ax.set_xlim([-5,5])
+ax.set_ylim([-5,5])
+ax.scatter(coords[0],coords[1])
+ax.scatter(sim.particles[1].x,sim.particles[1].y); 
+fig.show()
+
+end=time.clock()
+print("Running time: %s Seconds"%(end-start))
+
+# N=1000, n=9000, 100335.911741 Seconds 
+# N=1000, n=12000, 90704.097555 Seconds
