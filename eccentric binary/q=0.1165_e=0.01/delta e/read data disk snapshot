@@ -1,0 +1,20 @@
+import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data_theta = pd.read_csv("./desktop/snapshot_theta_q=0.1165_e=0.01_rfrom2.52to2.53_N=1000_n=12000.csv")
+data_r = pd.read_csv("./desktop/snapshot_r_q=0.1165_e=0.01_rfrom2.52to2.53_N=1000_n=12000.csv")
+
+fig = plt.figure(figsize=(10,7))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+# ax.set_ylim([1.5, 2.5])
+plt.title("t=9000*T1")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(data_theta.iloc[:,8999], data_r.iloc[:,8999], s=1.5, color='#B0C4DE', 
+            linewidth=1.5, label="q=0.1165\ne=0.01\n2.52 <= r <= 2.53\neps=0.3");
+plt.legend()
+# plt.savefig("./desktop/disk(t=5000).png", dpi=400)
+fig.show()
