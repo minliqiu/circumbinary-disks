@@ -1,0 +1,35 @@
+import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data_theta = pd.read_csv("./desktop/theta_rf_circular_t=10000.csv")
+data_r = pd.read_csv("./desktop/r_rf_circular_t=10000.csv")
+
+# final snapshot
+fig = plt.figure(figsize=(8,6))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+ax.set_ylim([2, 2.9])
+plt.title("snapshot of the disk\nt=5000")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(data_theta.iloc[:,4999], data_r.iloc[:,4999], s=1.5, color='#B0C4DE', 
+            linewidth=1.5, label="q=1\ne=0\n2.495 <= r <= 2.505\neps=0.3\ninitially circular disk");
+plt.legend()
+# plt.savefig("./desktop/disksnapshot_q=1_e=0_t=10000_circular.png", dpi=400)
+fig.show()
+
+# final snapshot
+fig = plt.figure(figsize=(8,6))
+ax = plt.subplot(111)
+ax.set_xlim([-4,4])
+ax.set_ylim([2.3, 2.65])
+plt.title("trajectory of particle #800\nafter equilibrium")
+plt.xlabel("theta")
+plt.ylabel("r")
+plt.scatter(data_theta.iloc[800,8000:9999], data_r.iloc[800,8000:9999], s=1.5, color='#B0C4DE', 
+            linewidth=1.5, label="q=1\ne=0\n2.495 <= r <= 2.505\neps=0.3\ninitially circular disk");
+plt.legend()
+plt.savefig("./desktop/trajectoryparticle#800_q=1_e=0_t=10000_circular.png", dpi=400)
+fig.show()
