@@ -1,0 +1,68 @@
+#e_b = 0.01
+import csv
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data1 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.45_q=0.1165_e=0.01.csv")
+data2 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.46_q=0.1165_e=0.01.csv")
+data3 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.47_q=0.1165_e=0.01.csv")
+data4 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.48_q=0.1165_e=0.01.csv")
+data5 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.49_q=0.1165_e=0.01.csv")
+data6 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.5_q=0.1165_e=0.01.csv")
+data7 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.51_q=0.1165_e=0.01.csv")
+data8 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.515_q=0.1165_e=0.01.csv")
+data9 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.521_q=0.1165_e=0.01.csv")
+data10 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.522_q=0.1165_e=0.01.csv")
+data11 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.523_q=0.1165_e=0.01.csv")
+data12 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.524_q=0.1165_e=0.01.csv")
+data13 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.525_q=0.1165_e=0.01.csv")
+data14 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.526_q=0.1165_e=0.01.csv")
+data15 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.527_q=0.1165_e=0.01.csv")
+data16 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.528_q=0.1165_e=0.01.csv")
+data17 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.529_q=0.1165_e=0.01.csv")
+data18 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.53_q=0.1165_e=0.01.csv")
+data19 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.54_q=0.1165_e=0.01.csv")
+data20 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.55_q=0.1165_e=0.01.csv")
+data21 = pd.read_csv("./desktop/data_q=0.1165_e=0.01/2.56_q=0.1165_e=0.01.csv")
+
+
+
+
+fig = plt.figure(figsize=(7,8))
+ax = plt.subplot(111)
+# ax.set_xlim([-4,4])
+ax.set_ylim([2.5,2.57])
+plt.title("q=0.1165 e_b = 0.01")
+plt.xlabel(r"$\theta$")
+plt.ylabel("r")
+
+
+plt.scatter(data1.iloc[:,0], data1.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data2.iloc[:,0], data2.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data3.iloc[:,0], data3.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data4.iloc[:,0], data4.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data5.iloc[:,0], data5.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data6.iloc[:,0], data6.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data7.iloc[:,0], data7.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data8.iloc[:,0], data8.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data9.iloc[:,0], data9.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data10.iloc[:,0], data10.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data11.iloc[:,0], data11.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data12.iloc[:,0], data12.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data13.iloc[:,0], data13.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data14.iloc[:,0], data14.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data15.iloc[:,0], data15.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data16.iloc[:,0], data16.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.430");
+plt.scatter(data17.iloc[:,0], data17.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.433");
+plt.scatter(data18.iloc[:,0], data18.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+plt.scatter(data19.iloc[:,0], data19.iloc[:,1], s=0.2, color='#ADD8E6', linewidth=0.15, label="ri=2.436");
+plt.scatter(data20.iloc[:,0], data20.iloc[:,1], s=0.2, color='#6495ED', linewidth=0.15, label="ri=2.436");
+plt.scatter(data21.iloc[:,0], data21.iloc[:,1], s=0.2, color='#7FFFD4', linewidth=0.15, label="ri=2.436");
+
+
+
+
+# plt.legend(loc='upper right')
+# plt.savefig("./desktop/ivtable_q=0.1165_e=0.01.png", dpi=400)
+plt.show()
