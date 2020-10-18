@@ -1,0 +1,73 @@
+import csv
+import math
+import time
+import numpy as np
+import pandas as pd
+from scipy import optimize
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
+import rebound
+
+start=time.clock()
+
+sim = rebound.Simulation()
+sim.integrator = "whfast"
+sim.dt = 1e-5 #timestep to start with
+
+
+sim.add(m=1) # Pluto
+sim.add(m=1, a=1, e=0.1) # Charon
+sim.move_to_com()
+sim.save("binary.bin")
+sim.status()
+# print(sim.particles[1].orbit)
+del sim
+
+def dispersion(vy2_initial, ri):
+    print("vy2_initial for test=",vy2_initial)
+    sim = rebound.Simulation("binary.bin")
+#     vy1_initial = sim.particles[1].vy
+    sim.add(x=ri, vy=vy2_initial) # test particle
+    orbits = sim.calculate_orbits()
+    T1 = orbits[0].P
+    particles = sim.particles
+    n = 4000
+    time = n*T1 # let the binary travel for n period
+    Noutputs = n+1
+    times = np.linspace(0, time, Noutputs) #create an array of time
+    x0, y0 = np.zeros(Noutputs), np.zeros(Noutputs)
+    x1, y1, vy1 = np.zeros(Noutputs), np.zeros(Noutputs), np.zeros(Noutputs)
+    x2, y2, vy2 = np.zeros(Noutputs), np.zeros(Noutputs), np.zeros(Noutputs)
+    
+    for i,time in enumerate(times):
+        sim.integrate(time, exact_finish_time=0) # 1 means outputs at exactly the time specified
+        x0[i], y0[i] = particles[0].x, particles[0].y
+        x1[i], y1[i] = particles[1].x, particles[1].y
+        x2[i], y2[i] = particles[2].x, particles[2].y
+    
+    theta=np.arctan2((y1-y0), (x1-x0)) # angle the +x axis rotates
+    x2_rf=x2*np.cos(theta)+y2*np.sin(theta) # massless particle in rotating frame
+    y2_rf=-x2*np.sin(theta)+y2*np.cos(theta)
+    theta2_rf=np.arctan2(y2_rf, x2_rf)
+    r2_rf=pow((x2_rf**2+y2_rf**2), 1/2)
+    
+    position=np.where(abs(theta2_rf)<0.05) # take one of the angular bins
+    r2_rf_test=r2_rf[position] #radii near +x axis in RF
+    std_r2 = np.std(r2_rf_test,ddof=1) # radial dispersion, standard deviation # judgement 1
+    print("std_r2=",std_r2)
+    
+    column = len(position[0]) # number of radii
+    deviation_ave = np.mean(r2_rf_test)-ri # average deviation # judgement 2
+    print("sum_deviation=",deviation_ave)
+    
+    del sim
+    return deviation_ave
+
+# vy2_initial = optimize.bisect(delta, 0.67162, 0.67163)
+# print("v2_initial=",vy2_initial)
+
+ri = 2.5 # initial radius of the test particle
+dispersion(0.89442719, ri)
+
+end=time.clock()
+print("Running time: %s Seconds"%(end-start))
