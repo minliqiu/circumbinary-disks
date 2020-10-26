@@ -31,7 +31,7 @@ def dispersion(vy2_initial, ri):
     orbits = sim.calculate_orbits()
     T1 = orbits[0].P
     particles = sim.particles
-    n = 4000
+    n = 2000
     time = n*T1 # let the binary travel for n period
     Noutputs = n+1
     times = np.linspace(0, time, Noutputs) #create an array of time
@@ -51,23 +51,27 @@ def dispersion(vy2_initial, ri):
     theta2_rf=np.arctan2(y2_rf, x2_rf)
     r2_rf=pow((x2_rf**2+y2_rf**2), 1/2)
     
-    position=np.where(abs(theta2_rf)<0.05) # take one of the angular bins
+    position=np.where(abs(theta2_rf)<0.1) # take one of the angular bins
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
     r2_rf_test=r2_rf[position] #radii near +x axis in RF
     std_r2 = np.std(r2_rf_test,ddof=1) # radial dispersion, standard deviation # judgement 1
     print("std_r2=",std_r2)
     
-    column = len(position[0]) # number of radii
     deviation_ave = np.mean(r2_rf_test)-ri # average deviation # judgement 2
     print("sum_deviation=",deviation_ave)
     
+    dispersion = deviation_ave
+    
     del sim
-    return deviation_ave
-
-# vy2_initial = optimize.bisect(delta, 0.67162, 0.67163)
-# print("v2_initial=",vy2_initial)
+    return dispersion
 
 ri = 2.5 # initial radius of the test particle
-dispersion(0.89442719, ri)
+dispersion(0.894, ri)
+
+# vy2_initial = optimize.bisect(dispersion, 0.67162, 0.67163)
+# print("v2_initial=",vy2_initial)
 
 end=time.clock()
 print("Running time: %s Seconds"%(end-start))
