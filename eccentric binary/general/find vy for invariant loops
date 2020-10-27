@@ -31,7 +31,7 @@ def dispersion(vy2_initial, ri):
     orbits = sim.calculate_orbits()
     T1 = orbits[0].P
     particles = sim.particles
-    n = 2000
+    n = 700
     time = n*T1 # let the binary travel for n period
     Noutputs = n+1
     times = np.linspace(0, time, Noutputs) #create an array of time
@@ -51,7 +51,28 @@ def dispersion(vy2_initial, ri):
     theta2_rf=np.arctan2(y2_rf, x2_rf)
     r2_rf=pow((x2_rf**2+y2_rf**2), 1/2)
     
-    position=np.where(abs(theta2_rf)<0.1) # take one of the angular bins
+    position=np.where((theta2_rf>0)&(theta2_rf<0.1)) # take one of the angular bins around the apoapse
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
+    
+    position=np.where((theta2_rf>0.1)&(theta2_rf<0.2)) # take one of the angular bins around the apoapse
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
+    position=np.where((theta2_rf>0.2)&(theta2_rf<0.3)) # take one of the angular bins around the apoapse
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
+    position=np.where((theta2_rf>0.3)&(theta2_rf<0.4)) # take one of the angular bins around the apoapse
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
+    position=np.where((theta2_rf>4)&(theta2_rf<0.5)) # take one of the angular bins around the apoapse
+    column = len(position[0]) # number of radii
+    print("number of close particles=",column)
+    
+    position=np.where((theta2_rf>0.5)&(theta2_rf<0.6)) # take one of the angular bins around the apoapse
     column = len(position[0]) # number of radii
     print("number of close particles=",column)
     
@@ -59,7 +80,7 @@ def dispersion(vy2_initial, ri):
     std_r2 = np.std(r2_rf_test,ddof=1) # radial dispersion, standard deviation # judgement 1
     print("std_r2=",std_r2)
     
-    deviation_ave = np.mean(r2_rf_test)-ri # average deviation # judgement 2
+    deviation_ave = np.mean(r2_rf_test)-2.5 # average deviation # judgement 2
     print("sum_deviation=",deviation_ave)
     
     dispersion = deviation_ave
@@ -68,7 +89,7 @@ def dispersion(vy2_initial, ri):
     return dispersion
 
 ri = 2.5 # initial radius of the test particle
-dispersion(0.894, ri)
+dispersion(0.8942, ri)
 
 # vy2_initial = optimize.bisect(dispersion, 0.67162, 0.67163)
 # print("v2_initial=",vy2_initial)
