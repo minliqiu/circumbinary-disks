@@ -30,7 +30,7 @@ def setupSimulation(N_testparticle):
 
 
 # get periodic orbits
-theta_r_e_periodic = pd.read_csv("/usr/local/2.5_for_col.csv")
+theta_r_e_periodic = pd.read_csv("./desktop/2.5_for_col.csv")
 theta_periodic = theta_r_e_periodic.iloc[:,0]
 r_periodic = theta_r_e_periodic.iloc[:,1]
 ex_periodic = theta_r_e_periodic.iloc[:,2]
@@ -71,7 +71,7 @@ ax.scatter(sim.particles[1].x,sim.particles[1].y);
 fig.show()
 
 endtime = 5000
-Noutputs = 5*endtime
+Noutputs = 2*endtime
 times = np.linspace(0, endtime, Noutputs)
 x, y = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
 vx, vy = np.zeros((sim.N, Noutputs)), np.zeros((sim.N, Noutputs))
@@ -125,18 +125,19 @@ for n in range(0, Noutputs): # go through time
 
 print("delta_e_vector_rms=",delta_e_vector_rms[Noutputs-1])
 data_delta_e_vector_rms = pd.DataFrame(delta_e_vector_rms)
-# data_delta_e_vector_rms.to_csv('./desktop/circular_delta_e_vector_eps=0.3_2.5only_500.csv', header=None, index=False)
+# data_delta_e_vector_rms.to_csv('./desktop/circular_delta_e_eps=0.5_2.5_1k.csv', header=None, index=False)
 
 # e_rms-t plotting
-fig = plt.figure(figsize=(10,7.5))
+fig = plt.figure(figsize=(7,6))
 ax = plt.subplot(111)
 ax.set_xlim([0,endtime])
-# ax.set_ylim([-0.01, 0.01])
-plt.title("eps=0.3 (circular)")
-ax.set_xlabel("Time")
-ax.set_ylabel("vector_(e-e_periodic)_rms")
-plt.scatter(times, delta_e_vector_rms, s=1, color='#4169E1', linewidth=0.1);
-# plt.savefig("./desktop/circular_delta_e_eps=0.3_2.5only_500.png", dpi=400)
+ax.set_ylim([0, 0.05])
+plt.title("eps=0.5 (circular)")
+ax.set_xlabel("t (yr)")
+ax.set_ylabel(r'$(e-e_{forced})_{rms}$')
+plt.scatter(times, delta_e_vector_rms, s=1, color='cornflowerblue', linewidth=0.1);
+plt.axhline(y=0.004, color = "k", ls="--")
+# plt.savefig("./desktop/circular_delta_e_eps=0.5_2.5.png", dpi=400)
 fig.show()
 
 # coords = np.zeros((2,sim.N))
